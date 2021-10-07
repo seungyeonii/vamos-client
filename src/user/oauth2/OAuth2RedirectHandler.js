@@ -12,7 +12,7 @@ export default function OAuth2RedirectHandler(props) {
 
     return <Redirect to={
         {
-            pathname: "/",
+            pathname: "/location",
             state: {
                 from: props.location
             }

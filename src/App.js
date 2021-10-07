@@ -13,6 +13,9 @@ import './App.css';
 import Signup from "./user/signup/Signup";
 import NotFound from "./common/NotFound";
 import OAuth2RedirectHandler from "./user/oauth2/OAuth2RedirectHandler";
+import test2 from "./page/test2";
+import PopUp from "./page/PopUp";
+import Writepage from "./page/Writepage";
 
 function App() {
 
@@ -55,6 +58,7 @@ function App() {
             <div className="app-body">
                 <Switch>
                     <Route exact path="/" component={Home}/>
+                    <Route exact path="/location" component={test2}/>
                     <PrivateRoute path="/profile" authenticated={authenticated}
                                   currentUser={currentUser}
                                   component={Profile}

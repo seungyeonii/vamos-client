@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Home.css';
+import PopUp from "../page/PopUp.js";
 
 class Home extends Component {
     render() {

@@ -50,3 +50,14 @@ export function signup(signupRequest) {
         body: JSON.stringify(signupRequest)
     });
 }
+
+export function updateUserLocation(userLocationUpdateRequest) {
+    return request({
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        url: API_BASE_URL + "/user/location",
+        method: 'PATCH',
+        body: JSON.stringify(userLocationUpdateRequest)
+    })
+}

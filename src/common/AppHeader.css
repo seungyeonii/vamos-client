@@ -5,9 +5,20 @@
 }
 
 .app-title {
-    line-height: 60px;
+    line-height: 75px;
+    padding : 15px;
     vertical-align: middle;
     font-size: 1.35em;
+}
+
+.search {
+    left: 0; right: 0;
+    margin-top: 20px;
+    width: 300px;
+    height: 27px;
+    border: none;
+    background: #e2fcf4;
+    border-radius: 20px;
 }
 
 .app-branding {
@@ -19,7 +30,7 @@
 }
 
 .app-nav ul {
-    list-style-position: none;
+    list-style-type: none;
     margin: 0;
     padding: 0;
 }
