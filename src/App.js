@@ -59,6 +59,7 @@ function App() {
                 <Switch>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/location" component={test2}/>
+                    <Route exact path="/write" component={Writepage}/>
                     <PrivateRoute path="/profile" authenticated={authenticated}
                                   currentUser={currentUser}
                                   component={Profile}

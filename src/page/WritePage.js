@@ -1,22 +1,7 @@
-import React, { useState } from 'react'
-import { Typography, Button, Form, Input } from 'antd';
-import Axios from 'axios';
-import {API_BASE_URL} from "../constants";
-import * as $ from 'jquery';
+import React, {useState} from 'react';
+import {Button, Form, Input} from "antd";
 
-const { TextArea } = Input;
-
-const Continents = [
-    { key: 1, value: "기타" },
-    { key: 2, value: "책" },
-    { key: 3, value: "가구" },
-    { key: 4, value: "가전제품" },
-    { key: 5, value: "디지털기기" },
-    { key: 6, value: "식물" },
-    { key: 7, value: "옷" }
-]
-
-function Writepage(props) {
+const WritePage = () => {
 
     const [Title, setTitle] = useState("")
     const [Description, setDescription] = useState("")
@@ -47,30 +32,27 @@ function Writepage(props) {
     const submitHandler = (event) => {
         event.preventDefault(); /* reflash를 방지하기 위함*/
 
-        if (!Title || !Description || !Price || !Continent ) {
+        if (!Title || !Description || !Price || !Continent || Images.length === 0) {
             return alert(" 모든 값을 넣어주셔야 합니다.")
         }
 
         //서버에 채운 값들을 request로 보낸다.
 
-      /*  let data = new FormData
-        form.append()
-        */
         const body = {
             //로그인 된 사람의 ID
+            writer: props.user.userData._id,
             title: Title,
-            content: Description,
+            description: Description,
             price: Price,
-            categoryNameEN: Continent
+            images: Images,
+            continents: Continent
         }
-        console.log(body);
 
-     Axios.post(API_BASE_URL+'/board', body)
+        Axios.post('/api/product', body)
             .then(response => {
                 if (response.data.success) {
                     alert('상품 업로드에 성공 했습니다.')
                     props.history.push('/')
-
                 } else {
                     alert('상품 업로드에 실패 했습니다.')
                 }
@@ -78,27 +60,28 @@ function Writepage(props) {
     }
 
     return (
-        <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        <div style={{maxWidth: '700px', margin: '2rem auto'}}>
+            <div style={{textAlign: 'center', marginBottom: '2rem'}}>
                 <h2> 중고 상품 판매 글쓰기</h2>
             </div>
-            <form onSubmit={submitHandler}>
-                <br />
-                <br />
+            <Form onSubmit={submitHandler}>
+                {/* DropZone */}
+                <br/>
+                <br/>
                 <label>제목</label>
-                <Input onChange={titleChangeHandler} value={Title} />
-                <br />
-                <br />
+                <Input onChange={titleChangeHandler} value={Title}/>
+                <br/>
+                <br/>
                 <br/>
                 <label>상품 설명</label>
-                <TextArea onChange={descriptionChangeHandler} value={Description} />
-                <br />
-                <br />
-                <br />
+                <TextArea onChange={descriptionChangeHandler} value={Description}/>
+                <br/>
+                <br/>
+                <br/>
                 <label>가격($)</label>
-                <Input type="number" onChange={priceChangeHandler} value={Price} />
-                <br />
-                <br />
+                <Input type="number" onChange={priceChangeHandler} value={Price}/>
+                <br/>
+                <br/>
                 <br/>
                 <label>카테고리</label>
                 <br/>
@@ -107,16 +90,17 @@ function Writepage(props) {
                         <option key={item.key} value={item.key}> {item.value}</option>
                     ))}
                 </select>
-                <br />
-                <br />
                 <br/>
-                <div style={{textAlign : 'center'}}>
-                    <input type="submit" style={{width:'100%'}} value="글올리기"/>
-
+                <br/>
+                <br/>
+                <div style={{textAlign: 'center'}}>
+                    <Button type="submit" style={{width: '100%'}}>
+                        글 올리기
+                    </Button>
                 </div>
-            </form>
+            </Form>
         </div>
     )
-}
+};
 
-export default Writepage
+export default WritePage;

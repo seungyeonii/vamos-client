@@ -3,17 +3,14 @@ import {updateUserLocation} from "../util/APIUtils";
 
 const {kakao} = window;
 const {daum} = window;
-
+let testval;
 let container;
 let geocoder;
 let marker;
 let map;
 
-const Test2 = (props) => {
-    const [state, setstate] = useState();
-    const {result,coords} = state;
-    setstate({});
-
+const Test2 = () => {
+    let m_location;
 
     useEffect(() => {
         mapscript();
@@ -36,7 +33,7 @@ const Test2 = (props) => {
 
     }
 
-     function sample5_execDaumPostcode() {
+    function sample5_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function (data) {
                 let addr = data.address; // 최종 주소 변수
@@ -45,46 +42,45 @@ const Test2 = (props) => {
                     if (status === daum.maps.services.Status.OK) {
                         var result = results[0];
                         var coords = new daum.maps.LatLng(result.y, result.x);
-
+                        m_location = result;
                         console.log(result, coords)
                         container.style.display = "block";
                         console.log(container + '1');
                         map.relayout();
                         map.setCenter(coords);
                         marker.setPosition(coords)
+
                     }
+                    return [result, coords]
                 });
             }
         }).open();
     }
 
 
-    const locationSubmit = (event) => {
-        event.preventDefault();
+    function submitLocation() {
+        let data = {
+            "x": m_location.x,
+            "y": m_location.y,
+            "addressName": m_location.address.address_name,
+        }
 
-        const locationRequest = Object.assign({}, {result, coords});
-        updateUserLocation(locationRequest)
-            .then(() => {
-                updateUserLocation()
-                    .then(response => {
-                        props.setAfterlocation(response, true);
-                    })
-                    .then(props.history.push("/"))
-                    .catch(response => alert(response.error.message));
+        updateUserLocation(data)
+            .then((response) => {
+                if (response.status === 200) {
+                    window.location.href = "/"
+                }
             })
     }
 
-
     return (
         <div>
-            <form onSubmit={locationSubmit}>
-                <input type="text" id="sample5_address"></input>
-                <button onClick={sample5_execDaumPostcode}>주소검색</button>
-                <div className="map" id="map" style={{width: "600px", height: "600px", margin: "30px"}}></div>
-                <div>
-                    <button type="submit" className="location_submit">보내기</button>
-                </div>
-            </form>
+            <input type="text" id="sample5_address"></input>
+            <button onClick={sample5_execDaumPostcode}>주소검색</button>
+            <div className="map" id="map" style={{width: "600px", height: "600px", margin: "30px"}}></div>
+            <div>
+                <button onClick={submitLocation}>완료</button>
+            </div>
         </div>
     )
 };

@@ -1,10 +1,29 @@
-import React, { useState } from 'react'
-import { Typography, Button, Form, Input } from 'antd';
-import Axios from 'axios';
-import {API_BASE_URL} from "../constants";
-import * as $ from 'jquery';
+import React, {useState} from 'react';
+import {postUpdate} from '../../util/APIUtils';
+import {Button, Form, Input} from "antd";
 
-const { TextArea } = Input;
+const {TextArea} = input;
+
+export default function Post(props) {
+    if (props.authenticated) {
+        return <Redirect to={
+            {
+                pathname: "/",
+                state: {
+                    from: props.home
+                }
+            }
+        }/>
+    }
+    return (
+        <div className="post-container">
+            <div className="post-content">
+                <h1 className="post-title"> 중고 상품 판매 글쓰기</h1>
+                <PostForm/>
+            </div>
+        </div>
+    )
+}
 
 const Continents = [
     { key: 1, value: "기타" },
@@ -16,8 +35,7 @@ const Continents = [
     { key: 7, value: "옷" }
 ]
 
-function Writepage(props) {
-
+function PostForm(props){
     const [Title, setTitle] = useState("")
     const [Description, setDescription] = useState("")
     const [Price, setPrice] = useState(0)
@@ -43,38 +61,24 @@ function Writepage(props) {
     const updateImages = (newImages) => {
         setImages(newImages)
     }
+    const imageChange = (e) => {
+        const img = e.target.files[0];
+        const formData = new FormData();
+        formData.append('file', img);
+    }
 
-    const submitHandler = (event) => {
-        event.preventDefault(); /* reflash를 방지하기 위함*/
+    const postSubmit = (event) => {
+        event.preventDefault();
 
-        if (!Title || !Description || !Price || !Continent ) {
-            return alert(" 모든 값을 넣어주셔야 합니다.")
-        }
-
-        //서버에 채운 값들을 request로 보낸다.
-
-      /*  let data = new FormData
-        form.append()
-        */
-        const body = {
-            //로그인 된 사람의 ID
-            title: Title,
-            content: Description,
-            price: Price,
-            categoryNameEN: Continent
-        }
-        console.log(body);
-
-     Axios.post(API_BASE_URL+'/board', body)
+        const postRequest = Object.assign({},{title, description,price, images,continents});
+        postUpdate(postRequest)
             .then(response => {
-                if (response.data.success) {
-                    alert('상품 업로드에 성공 했습니다.')
-                    props.history.push('/')
-
-                } else {
-                    alert('상품 업로드에 실패 했습니다.')
-                }
+                alert("successfully ");
+                this.props.history.push("/home");
             })
+            .catch(response => response.json()
+                .then(json => alert(json.error.message))
+            )
     }
 
     return (
@@ -82,7 +86,9 @@ function Writepage(props) {
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                 <h2> 중고 상품 판매 글쓰기</h2>
             </div>
-            <form onSubmit={submitHandler}>
+            <Form onSubmit={postSubmit()}>
+                <label>이미지</label>
+                <input onChange={imageChange} value={Images} />
                 <br />
                 <br />
                 <label>제목</label>
@@ -111,12 +117,11 @@ function Writepage(props) {
                 <br />
                 <br/>
                 <div style={{textAlign : 'center'}}>
-                    <input type="submit" style={{width:'100%'}} value="글올리기"/>
-
+                    <Button type="submit" style={{width:'100%'}}>
+                        글 올리기
+                    </Button>
                 </div>
-            </form>
+            </Form>
         </div>
     )
 }
-
-export default Writepage
