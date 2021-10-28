@@ -52,7 +52,6 @@ export function signup(signupRequest) {
 }
 
 export function updateUserLocation(userLocationUpdateRequest) {
-    console.log("2");
     return request({
         headers: {
             'Content-Type': 'application/json',
@@ -65,11 +64,29 @@ export function updateUserLocation(userLocationUpdateRequest) {
 
 export function postUpdate(postUpdateRequest) {
     return request({
-        headers: {
-            'content-Type': 'application/json',
-        },
+
         url: API_BASE_URL + "/board",
         method: 'POST',
-        body: JSON.stringify(postUpdateRequest)
+        body: postUpdateRequest
+    })
+}
+
+export function getPostList() {
+    return request({
+        headers: {
+            'Accept': 'application/json',
+        },
+        url: API_BASE_URL + "/boards",
+        method: 'GET',
+    })
+}
+
+export function deletePost(item) {
+    return request({
+        headers: {
+            'Accept': 'application/json',
+        },
+        url: API_BASE_URL + "/board/" + item.id,
+        method: 'DELETE',
     })
 }

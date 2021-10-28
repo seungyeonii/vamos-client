@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {updateUserLocation} from "../util/APIUtils";
+import "./LocationPage.css";
+import locationcard from "../img/locationcard.png";
 
 const {kakao} = window;
 const {daum} = window;
@@ -9,7 +11,7 @@ let geocoder;
 let marker;
 let map;
 
-const Test2 = () => {
+const LocationPage = () => {
     let m_location;
 
     useEffect(() => {
@@ -74,15 +76,33 @@ const Test2 = () => {
     }
 
     return (
-        <div>
-            <input type="text" id="sample5_address"></input>
-            <button onClick={sample5_execDaumPostcode}>주소검색</button>
-            <div className="map" id="map" style={{width: "600px", height: "600px", margin: "30px"}}></div>
-            <div>
-                <button onClick={submitLocation}>완료</button>
+        <div className="location_">
+            <div className="location_shape">
+                <br/>
+                <h2>
+                    위치를 설정해주세요.
+                    <h6>
+                        * 위치설정을 해야 근처의 물품을 확인할 수 있습니다.
+                        <br/>
+                        <br/>
+                        * 위치설정을 해야만 판매글을 올리실 수 있습니다.
+                    </h6>
+                    <div className="line" ></div>
+                    <div className="location_content">
+                        <br/>
+                        <br/>
+                        <input type="text" id="sample5_address"></input>
+                        <button onClick={sample5_execDaumPostcode}>주소검색</button>
+                        <div className="map" id="map"
+                             style={{width: "500px", height: "450px", margin: "25px 90px"}}></div>
+                        <div>
+                            <button className="button_submit" onClick={submitLocation}>완료</button>
+                        </div>
+                    </div>
+                </h2>
             </div>
         </div>
     )
 };
 
-export default Test2;
+export default LocationPage;

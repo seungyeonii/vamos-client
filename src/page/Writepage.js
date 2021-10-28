@@ -2,18 +2,28 @@ import React, { useState } from 'react'
 import { Typography, Button, Form, Input } from 'antd';
 import Axios from 'axios';
 import {API_BASE_URL} from "../constants";
-import * as $ from 'jquery';
+import {postUpdate} from "../util/APIUtils";
+import "./Writepage.css";
 
 const { TextArea } = Input;
 
 const Continents = [
-    { key: 1, value: "기타" },
-    { key: 2, value: "책" },
-    { key: 3, value: "가구" },
-    { key: 4, value: "가전제품" },
-    { key: 5, value: "디지털기기" },
-    { key: 6, value: "식물" },
-    { key: 7, value: "옷" }
+    { key: 1, value: "DIGITAL_DEVICE" },
+    { key: 2, value: "HOME_APPLIANCES" },
+    { key: 3, value: "FURNITURE_INTERIOR" },
+    { key: 4, value: "INFANT_CHILD" },
+    { key: 5, value: "TODDLER_BOOK" },
+    { key: 6, value: "PROCESSED_FOOD" },
+    { key: 7, value: "SPORTS_LEISURE" },
+    { key: 8, value: "WOMEN_FASHION" },
+    { key: 9, value: "MEN_FASHION" },
+    { key: 10, value: "GAME_HOBBY" },
+    { key: 11, value: "BEAUTY" },
+    { key: 12, value: "PET_SUPPLIES" },
+    { key: 13, value: "BOOKS_TICKETS_RECORDS" },
+    { key: 14, value: "PLANT" },
+    { key: 15, value: "ETC" },
+    { key: 16, value: "WANT_BUY" },
 ]
 
 function Writepage(props) {
@@ -40,8 +50,8 @@ function Writepage(props) {
         setContinent(event.currentTarget.value)
     }
 
-    const updateImages = (newImages) => {
-        setImages(newImages)
+    const updateImages = (event) => {
+        setImages(event.currentTarget.value)
     }
 
     const submitHandler = (event) => {
@@ -50,22 +60,29 @@ function Writepage(props) {
         if (!Title || !Description || !Price || !Continent ) {
             return alert(" 모든 값을 넣어주셔야 합니다.")
         }
-
+        console.log(event.target)
         //서버에 채운 값들을 request로 보낸다.
+      let data = new FormData(event.target);
+        data.append("title", Title)
+        data.append("content",Description)
+        data.append("price",Price)
+        data.append("categoryNumber",Continent)
+        //data.append("files", Images)
 
-      /*  let data = new FormData
-        form.append()
-        */
-        const body = {
+      /*  const body = {
             //로그인 된 사람의 ID
             title: Title,
             content: Description,
             price: Price,
             categoryNameEN: Continent
+        }*/
+        for (let key of data.entries()) {
+            console.log(key[0] + ', ' + key[1])
         }
-        console.log(body);
+        console.log(data);
+        // const headers ={'credentials': 'include'}
 
-     Axios.post(API_BASE_URL+'/board', body)
+    /* Axios.post(API_BASE_URL+'/board', data, {headers})
             .then(response => {
                 if (response.data.success) {
                     alert('상품 업로드에 성공 했습니다.')
@@ -75,6 +92,18 @@ function Writepage(props) {
                     alert('상품 업로드에 실패 했습니다.')
                 }
             })
+         .catch(res => console.log('res : ', res))
+
+     */
+
+        postUpdate(data)
+            .then((response)=>{
+                if (response.status === 200) {
+                    window.location.href = "/"
+                }
+            })
+            //.then(json => console.log(json))
+            .catch(res => res.json().then(console.log))
     }
 
     return (
@@ -84,24 +113,20 @@ function Writepage(props) {
             </div>
             <form onSubmit={submitHandler}>
                 <br />
-                <br />
-                <label>제목</label>
-                <Input onChange={titleChangeHandler} value={Title} />
+                <Input className="title" onChange={titleChangeHandler} value={Title} placeholder="제목을 입력하세요."/>
                 <br />
                 <br />
                 <br/>
-                <label>상품 설명</label>
-                <TextArea onChange={descriptionChangeHandler} value={Description} />
+                <Input className="description" onChange={descriptionChangeHandler} value={Description} placeholder="상품설명을 적어주세요."/>
                 <br />
                 <br />
                 <br />
-                <label>가격($)</label>
-                <Input type="number" onChange={priceChangeHandler} value={Price} />
+                <label>가격 : </label>
+                <Input className="price" type="number" onChange={priceChangeHandler} value={Price} placeholder="가격을 적어주세요."/>
                 <br />
                 <br />
                 <br/>
-                <label>카테고리</label>
-                <br/>
+                <label>카테고리 : </label>
                 <select onChange={continentChangeHandler} value={Continent}>
                     {Continents.map(item => (
                         <option key={item.key} value={item.key}> {item.value}</option>
@@ -111,7 +136,7 @@ function Writepage(props) {
                 <br />
                 <br/>
                 <div style={{textAlign : 'center'}}>
-                    <input type="submit" style={{width:'100%'}} value="글올리기"/>
+                    <button style={{width:'100%'}}>글올리기</button>
 
                 </div>
             </form>

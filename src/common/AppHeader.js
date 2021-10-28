@@ -16,23 +16,34 @@ export default function AppHeader({authenticated, onLogout}) {
                         { authenticated ? (
                             <ul>
                                 <li>
-                                    <NavLink to='/location'>Location</NavLink>
+                                    <NavLink to='/location'>위치설정</NavLink>
                                 </li>
+                                |
                                 <li>
-                                    <NavLink to='/profile'>Profile</NavLink>
+                                    <NavLink to='/write'>판매글쓰기</NavLink>
                                 </li>
+                                |
                                 <li>
-                                    <a href='#!' onClick={onLogout}>Logout</a>
+                                    <NavLink to ='/boards'>글조회</NavLink>
+                                </li>
+                                |
+                                <li>
+                                    <NavLink to='/profile'>마이페이지</NavLink>
+                                </li>
+                                |
+                                <li>
+                                    <a href='#!' onClick={onLogout}>로그아웃</a>
                                 </li>
                             </ul>
                         ): (
                             <ul>
 
                                 <li>
-                                    <NavLink to='/login'>Login</NavLink>
+                                    <NavLink to='/login'>로그인</NavLink>
                                 </li>
+                                |
                                 <li>
-                                    <NavLink to='/signup'>Signup</NavLink>
+                                    <NavLink to='/signup'>회원가입</NavLink>
                                 </li>
                             </ul>
                         )}

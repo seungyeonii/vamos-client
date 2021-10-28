@@ -27,6 +27,7 @@
 
 .app-options {
     float: right;
+
 }
 
 .app-nav ul {
@@ -38,6 +39,7 @@
 .app-nav ul li {
     list-style-type: none;
     display: inline-block;
+    margin-top: 2px;
 }
 
 .app-nav ul li a {
@@ -50,9 +52,9 @@
 }
 
 .app-nav ul li a:hover {
-    color: #0f96f6;
+    color: #3caa90;
 }
 
 .app-nav ul li a.active {
-    color: #0f96f6;
+    color: #479F8A;
 }

@@ -1,0 +1,13 @@
+.title {
+    width: 100%;
+    border: 1px solid gray;
+    border-radius: 10px;
+    height: 45px;
+}
+
+.description{
+    width: 100%;
+    border: 1px solid gray;
+    border-radius: 10px;
+    height: 170px;
+}

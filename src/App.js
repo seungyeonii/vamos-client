@@ -13,9 +13,13 @@ import './App.css';
 import Signup from "./user/signup/Signup";
 import NotFound from "./common/NotFound";
 import OAuth2RedirectHandler from "./user/oauth2/OAuth2RedirectHandler";
-import test2 from "./page/test2";
+import test2 from "./page/LocationPage";
 import PopUp from "./page/PopUp";
 import Writepage from "./page/Writepage";
+import List from "./page/List";
+import Post from "./page/Post";
+import LocationPage from "./page/LocationPage";
+import Footer from "./common/Footer";
 
 function App() {
 
@@ -58,12 +62,14 @@ function App() {
             <div className="app-body">
                 <Switch>
                     <Route exact path="/" component={Home}/>
-                    <Route exact path="/location" component={test2}/>
+                    <Route exact path="/location" component={LocationPage}/>
                     <Route exact path="/write" component={Writepage}/>
+                    <Route exact path="/boards" component={Post}/>
                     <PrivateRoute path="/profile" authenticated={authenticated}
                                   currentUser={currentUser}
                                   component={Profile}
                     />
+
                     <Route path='/login'
                            render={
                                (props) =>
@@ -91,6 +97,7 @@ function App() {
                     />
                     <Route component={NotFound}/>
                 </Switch>
+                <Footer/>
             </div>
         </div>
     );
